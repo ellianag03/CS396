@@ -1,13 +1,10 @@
-<div class="hero">
+{% extends "base.html" %}
 
-    <!-- sidebar -->
-    <div class="sidebar"> 
-        <!-- links to the other web pages go here -->
-         <a href="search.html">Search</a>
-         <a href="display.html">Data Display</a>
-         <a href="download.html">Data Download</a>
-         <a href="upload.html">Upload Data</a>
-    </div>
+{% block title %}epaData{% endblock %}
+
+{% block content %}
+
+<div class="hero">
 
     <!-- title -->
     <h1>epaData</h1>
@@ -30,3 +27,4 @@
 
 </div>
 
+{% endblock %}
