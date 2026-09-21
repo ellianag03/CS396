@@ -1,0 +1,154 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+    <head> 
+        <meta charset="UTF-8"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <title>Import Approval</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+        background: #f5f5f5;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: auto;
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .status {
+        padding: 12px;
+        margin: 20px 0;
+        border-radius: 5px;
+        background: #eef2f7;
+    }
+
+    .actions {
+        margin-top: 30px;
+        display: flex;
+        gap: 15px;
+    }
+
+    button {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .approve {
+        background: #198754;
+        color: white;
+    }
+
+    .reject {
+        background: #dc3545;
+        color: white;
+    }
+</style>
+
+</head>
+<body>
+    <div class="containter">
+        <h1>Import Approval</h1>
+
+<div class="status">
+    <strong>Import ID:</strong>
+    {{ import_batch.id }}
+</div>
+
+<h2>File Information</h2>
+
+<p>
+    <strong>Filename:</strong>
+    {{ import_batch.filename }}
+</p>
+
+<p>
+    <strong>Uploaded:</strong>
+    {{ import_batch.uploaded_at }}
+</p>
+
+<p>
+    <strong>Rows:</strong>
+    {{ import_batch.row_count or 0 }}
+</p>
+
+<p>
+    <strong>Valid Rows:</strong>
+    {{ import_batch.valid_row_count or 0 }}
+</p>
+
+<p>
+    <strong>Rejected Rows:</strong>
+    {{ import_batch.rejected_row_count or 0 }}
+</p>
+
+<p>
+    <strong>Status:</strong>
+    {{ import_batch.status }}
+</p>
+
+{% if import_batch.status == "VALIDATED" %}
+
+    <h2>Approval Required</h2>
+
+    <p>
+        Review the validation results before approving this import.
+    </p>
+
+    <div class="actions">
+
+        <form
+            method="POST"
+            action="{{ url_for('approval.approve', import_id=import_batch.id) }}"
+        >
+            <button type="submit" class="approve">
+                Approve Import
+            </button>
+        </form>
+
+        <form
+            method="POST"
+            action="{{ url_for('approval.reject', import_id=import_batch.id) }}"
+        >
+            <button type="submit" class="reject">
+                Reject Import
+            </button>
+        </form>
+
+    </div>
+
+{% elif import_batch.status == "APPROVED" %}
+
+    <div class="status">
+        <strong>Import approved.</strong>
+    </div>
+
+    <p>
+        Database insertion will be performed in the next stage.
+    </p>
+
+{% elif import_batch.status == "REJECTED" %}
+
+    <div class="status">
+        <strong>Import rejected.</strong>
+    </div>
+
+    <p>
+        This import has not been inserted into the database.
+    </p>
+
+{% endif %}
+
+    </div>
+</body>
+</html>
+
+
