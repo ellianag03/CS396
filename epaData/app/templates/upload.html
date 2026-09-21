@@ -1,0 +1,27 @@
+<div class="hero">
+
+    <h1>Upload EPA Data</h1>
+
+    <p>
+        Upload a CSV or Excel file for validation and import.
+    </p>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <div style="margin: 30px 0;">
+            <input
+                type="file"
+                name="data_file"
+                accept=".csv,.xlsx,.xls"
+                required
+            >
+        </div>
+
+        <button class="button" type="submit">
+            Upload File
+        </button>
+
+    </form>
+
+</div>
+
