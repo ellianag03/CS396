@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Validation Report</title>
+</head>
+<body>
+
+    <h1>Validation Report</h1>
+
+    <h2>{{ filename }}</h2>
+
+    {% if validation.is_valid %}
+        <p style="color: green;">✓ File is valid</p>
+    {% else %}
+        <p style="color: red;">✗ File has validation errors</p>
+    {% endif %}
+
+    {% if validation.errors %}
+        <h3>Errors</h3>
+        <ul>
+            {% for error in validation.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if validation.warnings %}
+        <h3>Warnings</h3>
+        <ul>
+            {% for warning in validation.warnings %}
+                <li>{{ warning }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <h3>File Summary</h3>
+
+    <p>Rows: {{ validation.row_count }}</p>
+    <p>Columns: {{ validation.column_count }}</p>
+
+    {% if validation.missing_columns %}
+        <h3>Missing Columns</h3>
+        <ul>
+            {% for column in validation.missing_columns %}
+                <li>{{ column }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if validation.extra_columns %}
+        <h3>Extra Columns</h3>
+        <ul>
+            {% for column in validation.extra_columns %}
+                <li>{{ column }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if validation.missing_values %}
+        <h3>Missing Values</h3>
+        <ul>
+            {% for column, count in validation.missing_values.items() %}
+                <li>{{ column }}: {{ count }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+</body>
+</html>
+{% if import_batch %}
+    <div style="margin-top: 30px;">
+        <a
+            href="{{ url_for(
+                'approval.approval',
+                import_id=import_batch.id
+            ) }}"
+            style="
+                display: inline-block;
+                padding: 12px 24px;
+                background-color: #0d6efd;
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
+            "
+        >
+            Proceed to Approval
+        </a>
+    </div>
+{% endif %}
+
+{% if import_batch %}
+    <div style="margin-top: 30px;">
+        <a
+            href="{{ url_for('approval.approval', import_id=import_batch.id) }}"
+            style="
+                display: inline-block;
+                padding: 12px 24px;
+                background-color: #0d6efd;
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
+                font-weight: bold;
+            "
+        >
+            Proceed to Approval
+        </a>
+    </div>
+{% endif %}
